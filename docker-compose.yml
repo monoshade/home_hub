@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: home_hub_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-home_hub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-home_hub}
+      POSTGRES_DB: ${POSTGRES_DB:-home_hub}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # Data persisted to a local file directory (bind mount).
+      - ./db/data:/var/lib/postgresql/data
+      # SQL files here run once, on first init of an empty data dir.
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-home_hub} -d ${POSTGRES_DB:-home_hub}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: home_hub_backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-home_hub}
+      DB_USER: ${POSTGRES_USER:-home_hub}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-home_hub}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: home_hub_frontend
+    restart: unless-stopped
+    environment:
+      # Where the browser reaches the backend.
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend

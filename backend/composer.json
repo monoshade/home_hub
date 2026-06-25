@@ -1,0 +1,14 @@
+{
+    "name": "home-hub/backend",
+    "description": "Home Hub PHP backend",
+    "type": "project",
+    "require": {
+        "php": ">=8.3",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
