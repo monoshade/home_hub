@@ -1,17 +1,19 @@
 import Tabs from './Tabs'
 import EntityCard from './EntityCard'
-import { CATEGORIES, items as allItems, spaceIndex } from '../data/sampleData'
+import { CATEGORIES } from '../config'
 
-const HIDDEN = ['id', 'category', 'spaceId', 'name']
+const HIDDEN = ['id', 'category', 'space_id', 'name', 'created_at']
 
 // Full inventory of belongings, browsable by category via sub-tabs.
-export default function DeviceView() {
+export default function DeviceView({ data }) {
+  const { items, spaceIndex } = data
+
   const tabs = CATEGORIES.map((category) => {
-    const list = allItems.filter((item) => item.category === category.key)
+    const list = items.filter((item) => item.category === category.key)
     return {
       id: category.key,
       label: `${category.label} (${list.length})`,
-      render: () => <ItemGrid items={list} />,
+      render: () => <ItemGrid items={list} spaceIndex={spaceIndex} />,
     }
   })
 
@@ -23,13 +25,13 @@ export default function DeviceView() {
   )
 }
 
-function ItemGrid({ items }) {
+function ItemGrid({ items, spaceIndex }) {
   if (!items.length) return <p className="empty">No items in this category.</p>
 
   return (
     <div className="grid">
       {items.map((item) => {
-        const location = item.spaceId ? spaceIndex[item.spaceId] : null
+        const location = item.space_id != null ? spaceIndex[item.space_id] : null
         return (
           <EntityCard
             key={item.id}

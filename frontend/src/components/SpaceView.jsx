@@ -2,14 +2,18 @@ import { useState } from 'react'
 import Tabs from './Tabs'
 import EntityCard from './EntityCard'
 import FieldList from './FieldList'
-import { properties, SPACE_TYPES, itemsInSpace } from '../data/sampleData'
+import { SPACE_TYPES } from '../config'
+
+const PROP_HIDDEN = ['id', 'space_type', 'name', 'spaces', 'items', 'parent_space_id', 'created_at']
+const SPACE_HIDDEN = ['id', 'space_type', 'name', 'items', 'parent_space_id', 'created_at']
 
 // Browse properties, drill into their spaces, and see the items located there.
-export default function SpaceView() {
+export default function SpaceView({ data }) {
+  const { properties } = data
   const [selectedId, setSelectedId] = useState(properties[0]?.id)
   const property = properties.find((p) => p.id === selectedId) ?? properties[0]
 
-  if (!property) return <p className="empty">No properties recorded.</p>
+  if (!property) return <p className="empty">No properties yet.</p>
 
   return (
     <div className="space-view">
@@ -23,7 +27,7 @@ export default function SpaceView() {
           >
             <span className="prop-item-top">
               <span className="prop-name">{p.name}</span>
-              <span className={`badge badge--${p.kind}`}>{p.kind}</span>
+              <span className={`badge badge--${p.space_type}`}>{p.space_type}</span>
             </span>
             <span className="prop-addr">{p.address}</span>
           </button>
@@ -33,9 +37,10 @@ export default function SpaceView() {
       <section className="prop-detail">
         <div className="prop-header">
           <h2>
-            {property.name} <span className={`badge badge--${property.kind}`}>{property.kind}</span>
+            {property.name}{' '}
+            <span className={`badge badge--${property.space_type}`}>{property.space_type}</span>
           </h2>
-          <FieldList obj={property} hidden={['id', 'kind', 'name', 'spaces']} />
+          <FieldList obj={property} hidden={PROP_HIDDEN} />
         </div>
         {/* key forces the sub-tabs to reset when switching property */}
         <SpaceTabs key={property.id} property={property} />
@@ -45,9 +50,10 @@ export default function SpaceView() {
 }
 
 function SpaceTabs({ property }) {
+  const spaces = property.spaces ?? []
   const tabs = SPACE_TYPES.map((type) => ({
     ...type,
-    spaces: property.spaces.filter((s) => s.spaceType === type.key),
+    spaces: spaces.filter((s) => s.space_type === type.key),
   }))
     .filter((type) => type.spaces.length > 0)
     .map((type) => ({
@@ -65,19 +71,19 @@ function SpaceGrid({ spaces }) {
   return (
     <div className="grid">
       {spaces.map((space) => {
-        const located = itemsInSpace(space.id)
+        const located = space.items ?? []
         return (
           <EntityCard
             key={space.id}
             title={space.name}
             badge={`${located.length} item${located.length !== 1 ? 's' : ''}`}
             obj={space}
-            hidden={['id', 'spaceType', 'name']}
+            hidden={SPACE_HIDDEN}
           >
             <div className="space-items">
               {located.length ? (
                 located.map((item) => (
-                  <span className="item-chip" key={item.id}>
+                  <span className="item-chip" key={`${item.category}-${item.id}`}>
                     <span className={`dot dot--${item.category}`} />
                     {item.name}
                   </span>

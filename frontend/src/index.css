@@ -265,21 +265,21 @@ body {
   white-space: nowrap;
 }
 
-.badge--device { background: #e3edff; color: var(--c-device); }
+.badge--devices { background: #e3edff; color: var(--c-device); }
 .badge--furniture { background: #fdf0dd; color: var(--c-furniture); }
-.badge--instrument { background: #f1e9fe; color: var(--c-instrument); }
-.badge--sport { background: #dcf5ec; color: var(--c-sport); }
-.badge--plant { background: #d7f3ef; color: var(--c-plant); }
-.badge--vehicle { background: #fde3e3; color: var(--c-vehicle); }
+.badge--instruments { background: #f1e9fe; color: var(--c-instrument); }
+.badge--sport-equipments { background: #dcf5ec; color: var(--c-sport); }
+.badge--plants { background: #d7f3ef; color: var(--c-plant); }
+.badge--vehicles { background: #fde3e3; color: var(--c-vehicle); }
 .badge--house { background: var(--accent-soft); color: var(--c-house); }
 .badge--apartment { background: #fce0ee; color: var(--c-apartment); }
 
-.dot--device { background: var(--c-device); }
+.dot--devices { background: var(--c-device); }
 .dot--furniture { background: var(--c-furniture); }
-.dot--instrument { background: var(--c-instrument); }
-.dot--sport { background: var(--c-sport); }
-.dot--plant { background: var(--c-plant); }
-.dot--vehicle { background: var(--c-vehicle); }
+.dot--instruments { background: var(--c-instrument); }
+.dot--sport-equipments { background: var(--c-sport); }
+.dot--plants { background: var(--c-plant); }
+.dot--vehicles { background: var(--c-vehicle); }
 
 /* ------------------------------------------------------------------- misc */
 .muted {

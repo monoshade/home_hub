@@ -2,7 +2,7 @@
 // e.g. "purchaseDate" -> "Purchase Date", "floor_level" -> "Floor Level"
 export function labelize(key) {
   return String(key)
-    .replace(/_/g, ' ')
+    .replace(/[_-]/g, ' ')
     .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
     .replace(/\b\w/g, (c) => c.toUpperCase())
 }
