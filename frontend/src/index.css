@@ -1,0 +1,305 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #e3e6ea;
+  --text: #1f2430;
+  --muted: #79808c;
+  --accent: #4f46e5;
+  --accent-soft: #eef0fe;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1);
+
+  /* category / kind accents */
+  --c-device: #2563eb;
+  --c-furniture: #b45309;
+  --c-instrument: #7c3aed;
+  --c-sport: #059669;
+  --c-plant: #0d9488;
+  --c-vehicle: #dc2626;
+  --c-house: #4f46e5;
+  --c-apartment: #db2777;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------------------ layout */
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.tagline {
+  margin: 0.15rem 0 1.25rem;
+  color: var(--muted);
+}
+
+/* -------------------------------------------------------------------- tabs */
+.tab-bar {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0.6rem 0.95rem;
+  font: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  border-radius: 6px 6px 0 0;
+}
+
+.tab:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.tab--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.root-tabs > .tab-bar .tab {
+  font-size: 1.02rem;
+}
+
+.sub-tabs > .tab-bar {
+  margin-bottom: 1rem;
+}
+
+.view-hint {
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* -------------------------------------------------------------- space view */
+.space-view {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.sidebar-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.prop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prop-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+  padding: 0.7rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.prop-item:hover {
+  border-color: #c7ccff;
+}
+
+.prop-item--active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.prop-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.prop-name {
+  font-weight: 600;
+}
+
+.prop-addr {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.prop-header {
+  margin-bottom: 1rem;
+}
+
+.prop-header h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+/* -------------------------------------------------------------- card grids */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 0.9rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  box-shadow: var(--shadow);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.card-location {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------- field list */
+.fields {
+  margin: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.field {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.field dt {
+  color: var(--muted);
+}
+
+.field dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 500;
+}
+
+/* ----------------------------------------------------- items within a space */
+.space-items {
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.item-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+/* ------------------------------------------------------------------ badges */
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.badge--device { background: #e3edff; color: var(--c-device); }
+.badge--furniture { background: #fdf0dd; color: var(--c-furniture); }
+.badge--instrument { background: #f1e9fe; color: var(--c-instrument); }
+.badge--sport { background: #dcf5ec; color: var(--c-sport); }
+.badge--plant { background: #d7f3ef; color: var(--c-plant); }
+.badge--vehicle { background: #fde3e3; color: var(--c-vehicle); }
+.badge--house { background: var(--accent-soft); color: var(--c-house); }
+.badge--apartment { background: #fce0ee; color: var(--c-apartment); }
+
+.dot--device { background: var(--c-device); }
+.dot--furniture { background: var(--c-furniture); }
+.dot--instrument { background: var(--c-instrument); }
+.dot--sport { background: var(--c-sport); }
+.dot--plant { background: var(--c-plant); }
+.dot--vehicle { background: var(--c-vehicle); }
+
+/* ------------------------------------------------------------------- misc */
+.muted {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.empty {
+  color: var(--muted);
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+/* ------------------------------------------------------------- responsive */
+@media (max-width: 720px) {
+  .space-view {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,27 +1,22 @@
-import { useEffect, useState } from 'react'
-import { api } from './api'
+import Tabs from './components/Tabs'
+import SpaceView from './components/SpaceView'
+import DeviceView from './components/DeviceView'
 
 export default function App() {
-  const [items, setItems] = useState([])
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    api.items().then(setItems).catch((e) => setError(e.message))
-  }, [])
+  const tabs = [
+    { id: 'space', label: 'Space View', render: () => <SpaceView /> },
+    { id: 'devices', label: 'Full Device View', render: () => <DeviceView /> },
+  ]
 
   return (
-    <main style={{ fontFamily: 'system-ui, sans-serif', padding: '2rem' }}>
-      <h1>Home Hub</h1>
-      <p>React + PHP + PostgreSQL skeleton.</p>
-
-      {error && <p style={{ color: 'crimson' }}>Error: {error}</p>}
-
-      <h2>Items</h2>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-    </main>
+    <div className="app">
+      <header className="app-header">
+        <h1>Home Hub</h1>
+        <p className="tagline">Browse your spaces and belongings</p>
+      </header>
+      <main className="app-main">
+        <Tabs items={tabs} className="root-tabs" />
+      </main>
+    </div>
   )
 }
