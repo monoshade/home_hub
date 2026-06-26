@@ -2,7 +2,9 @@ import { useState } from 'react'
 import Tabs from './Tabs'
 import EntityCard from './EntityCard'
 import FieldList from './FieldList'
-import { SPACE_TYPES } from '../config'
+import { SPACE_TYPES, SPACE_ICONS, CATEGORY_ICONS } from '../config'
+
+const PROP_ICONS = { house: '🏡', apartment: '🏢' }
 
 const PROP_HIDDEN = ['id', 'space_type', 'name', 'spaces', 'items', 'parent_space_id', 'created_at']
 const SPACE_HIDDEN = ['id', 'space_type', 'name', 'items', 'parent_space_id', 'created_at']
@@ -26,7 +28,10 @@ export default function SpaceView({ data }) {
             onClick={() => setSelectedId(p.id)}
           >
             <span className="prop-item-top">
-              <span className="prop-name">{p.name}</span>
+              <span className="prop-name">
+                <span className="prop-icon" aria-hidden="true">{PROP_ICONS[p.space_type] ?? '🏠'}</span>
+                {p.name}
+              </span>
               <span className={`badge badge--${p.space_type}`}>{p.space_type}</span>
             </span>
             <span className="prop-addr">{p.address}</span>
@@ -58,7 +63,7 @@ function SpaceTabs({ property }) {
     .filter((type) => type.spaces.length > 0)
     .map((type) => ({
       id: type.key,
-      label: `${type.label} (${type.spaces.length})`,
+      label: `${type.icon} ${type.label} (${type.spaces.length})`,
       render: () => <SpaceGrid spaces={type.spaces} />,
     }))
 
@@ -76,6 +81,7 @@ function SpaceGrid({ spaces }) {
           <EntityCard
             key={space.id}
             title={space.name}
+            icon={SPACE_ICONS[space.space_type]}
             badge={`${located.length} item${located.length !== 1 ? 's' : ''}`}
             obj={space}
             hidden={SPACE_HIDDEN}
@@ -84,7 +90,7 @@ function SpaceGrid({ spaces }) {
               {located.length ? (
                 located.map((item) => (
                   <span className="item-chip" key={`${item.category}-${item.id}`}>
-                    <span className={`dot dot--${item.category}`} />
+                    <span className="chip-icon" aria-hidden="true">{CATEGORY_ICONS[item.category] ?? '•'}</span>
                     {item.name}
                   </span>
                 ))

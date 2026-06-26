@@ -1,6 +1,6 @@
 import Tabs from './Tabs'
 import EntityCard from './EntityCard'
-import { CATEGORIES } from '../config'
+import { CATEGORIES, CATEGORY_ICONS } from '../config'
 
 const HIDDEN = ['id', 'category', 'space_id', 'name', 'created_at']
 
@@ -12,7 +12,7 @@ export default function DeviceView({ data }) {
     const list = items.filter((item) => item.category === category.key)
     return {
       id: category.key,
-      label: `${category.label} (${list.length})`,
+      label: `${category.icon} ${category.label} (${list.length})`,
       render: () => <ItemGrid items={list} spaceIndex={spaceIndex} />,
     }
   })
@@ -36,6 +36,7 @@ function ItemGrid({ items, spaceIndex }) {
           <EntityCard
             key={item.id}
             title={item.name}
+            icon={CATEGORY_ICONS[item.category]}
             badge={item.category}
             badgeClass={`badge--${item.category}`}
             obj={item}

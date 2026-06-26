@@ -14,14 +14,22 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Home Hub</h1>
-        <p className="tagline">Browse your spaces and belongings</p>
+        <div className="brand">
+          <span className="brand-mark" aria-hidden="true">🏠</span>
+          <div>
+            <h1>Home Hub</h1>
+            <p className="tagline">Browse your spaces and belongings</p>
+          </div>
+        </div>
       </header>
       <main className="app-main">
         {data.error ? (
           <p className="empty">Couldn’t load data: {data.error}</p>
         ) : data.loading ? (
-          <p className="empty">Loading…</p>
+          <div className="loading">
+            <span className="spinner" aria-hidden="true" />
+            <span>Loading your home…</span>
+          </div>
         ) : (
           <Tabs items={tabs} className="root-tabs" />
         )}
