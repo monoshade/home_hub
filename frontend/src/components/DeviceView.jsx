@@ -1,6 +1,8 @@
 import Tabs from './Tabs'
 import EntityCard from './EntityCard'
 import { CATEGORIES, CATEGORY_ICONS } from '../config'
+import styles from './DeviceView.module.css'
+import shared from '../styles/shared.module.css'
 
 const HIDDEN = ['id', 'category', 'space_id', 'name', 'created_at']
 
@@ -18,18 +20,18 @@ export default function DeviceView({ data }) {
   })
 
   return (
-    <div className="view">
-      <p className="view-hint">Every belonging across all spaces — browse by category.</p>
-      <Tabs items={tabs} className="sub-tabs" />
+    <div className={styles.view}>
+      <p className={styles.viewHint}>Every belonging across all spaces — browse by category.</p>
+      <Tabs items={tabs} variant="underline" />
     </div>
   )
 }
 
 function ItemGrid({ items, spaceIndex }) {
-  if (!items.length) return <p className="empty">No items in this category.</p>
+  if (!items.length) return <p className={shared.empty}>No items in this category.</p>
 
   return (
-    <div className="grid">
+    <div className={shared.grid}>
       {items.map((item) => {
         const location = item.space_id != null ? spaceIndex[item.space_id] : null
         return (
@@ -38,17 +40,17 @@ function ItemGrid({ items, spaceIndex }) {
             title={item.name}
             icon={CATEGORY_ICONS[item.category]}
             badge={item.category}
-            badgeClass={`badge--${item.category}`}
+            badgeClass={shared[`badge--${item.category}`]}
             obj={item}
             hidden={HIDDEN}
           >
-            <p className="card-location">
+            <p className={styles.cardLocation}>
               {location ? (
                 <>
                   📍 {location.property.name} · {location.space.name}
                 </>
               ) : (
-                <span className="muted">Unassigned</span>
+                <span className={shared.muted}>Unassigned</span>
               )}
             </p>
           </EntityCard>

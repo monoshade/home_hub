@@ -2,6 +2,8 @@ import Tabs from './components/Tabs'
 import SpaceView from './components/SpaceView'
 import DeviceView from './components/DeviceView'
 import { useHomeData } from './hooks/useHomeData'
+import styles from './App.module.css'
+import shared from './styles/shared.module.css'
 
 export default function App() {
   const data = useHomeData()
@@ -12,26 +14,26 @@ export default function App() {
   ]
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <div className="brand">
-          <span className="brand-mark" aria-hidden="true">🏠</span>
+    <div className={styles.app}>
+      <header className={styles.appHeader}>
+        <div className={styles.brand}>
+          <span className={styles.brandMark} aria-hidden="true">🏠</span>
           <div>
-            <h1>Home Hub</h1>
-            <p className="tagline">Browse your spaces and belongings</p>
+            <h1 className={styles.title}>Home Hub</h1>
+            <p className={styles.tagline}>Browse your spaces and belongings</p>
           </div>
         </div>
       </header>
-      <main className="app-main">
+      <main className={styles.appMain}>
         {data.error ? (
-          <p className="empty">Couldn’t load data: {data.error}</p>
+          <p className={shared.empty}>Couldn’t load data: {data.error}</p>
         ) : data.loading ? (
-          <div className="loading">
-            <span className="spinner" aria-hidden="true" />
+          <div className={styles.loading}>
+            <span className={styles.spinner} aria-hidden="true" />
             <span>Loading your home…</span>
           </div>
         ) : (
-          <Tabs items={tabs} className="root-tabs" />
+          <Tabs items={tabs} variant="pill" />
         )}
       </main>
     </div>

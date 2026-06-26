@@ -3,6 +3,8 @@ import Tabs from './Tabs'
 import EntityCard from './EntityCard'
 import FieldList from './FieldList'
 import { SPACE_TYPES, SPACE_ICONS, CATEGORY_ICONS } from '../config'
+import styles from './SpaceView.module.css'
+import shared from '../styles/shared.module.css'
 
 const PROP_ICONS = { house: '🏡', apartment: '🏢' }
 
@@ -15,35 +17,37 @@ export default function SpaceView({ data }) {
   const [selectedId, setSelectedId] = useState(properties[0]?.id)
   const property = properties.find((p) => p.id === selectedId) ?? properties[0]
 
-  if (!property) return <p className="empty">No properties yet.</p>
+  if (!property) return <p className={shared.empty}>No properties yet.</p>
 
   return (
-    <div className="space-view">
-      <aside className="prop-list">
-        <h3 className="sidebar-title">Properties</h3>
+    <div className={styles.spaceView}>
+      <aside className={styles.propList}>
+        <h3 className={styles.sidebarTitle}>Properties</h3>
         {properties.map((p) => (
           <button
             key={p.id}
-            className={`prop-item ${p.id === property.id ? 'prop-item--active' : ''}`}
+            className={`${styles.propItem} ${p.id === property.id ? styles.propItemActive : ''}`}
             onClick={() => setSelectedId(p.id)}
           >
-            <span className="prop-item-top">
-              <span className="prop-name">
-                <span className="prop-icon" aria-hidden="true">{PROP_ICONS[p.space_type] ?? '🏠'}</span>
+            <span className={styles.propItemTop}>
+              <span className={styles.propName}>
+                <span className={styles.propIcon} aria-hidden="true">{PROP_ICONS[p.space_type] ?? '🏠'}</span>
                 {p.name}
               </span>
-              <span className={`badge badge--${p.space_type}`}>{p.space_type}</span>
+              <span className={`${shared.badge} ${shared[`badge--${p.space_type}`]}`}>{p.space_type}</span>
             </span>
-            <span className="prop-addr">{p.address}</span>
+            <span className={styles.propAddr}>{p.address}</span>
           </button>
         ))}
       </aside>
 
-      <section className="prop-detail">
-        <div className="prop-header">
+      <section className={styles.propDetail}>
+        <div className={styles.propHeader}>
           <h2>
             {property.name}{' '}
-            <span className={`badge badge--${property.space_type}`}>{property.space_type}</span>
+            <span className={`${shared.badge} ${shared[`badge--${property.space_type}`]}`}>
+              {property.space_type}
+            </span>
           </h2>
           <FieldList obj={property} hidden={PROP_HIDDEN} />
         </div>
@@ -67,14 +71,14 @@ function SpaceTabs({ property }) {
       render: () => <SpaceGrid spaces={type.spaces} />,
     }))
 
-  if (!tabs.length) return <p className="empty">No spaces recorded for this property.</p>
+  if (!tabs.length) return <p className={shared.empty}>No spaces recorded for this property.</p>
 
-  return <Tabs items={tabs} className="sub-tabs" />
+  return <Tabs items={tabs} variant="underline" />
 }
 
 function SpaceGrid({ spaces }) {
   return (
-    <div className="grid">
+    <div className={shared.grid}>
       {spaces.map((space) => {
         const located = space.items ?? []
         return (
@@ -86,16 +90,16 @@ function SpaceGrid({ spaces }) {
             obj={space}
             hidden={SPACE_HIDDEN}
           >
-            <div className="space-items">
+            <div className={styles.spaceItems}>
               {located.length ? (
                 located.map((item) => (
-                  <span className="item-chip" key={`${item.category}-${item.id}`}>
-                    <span className="chip-icon" aria-hidden="true">{CATEGORY_ICONS[item.category] ?? '•'}</span>
+                  <span className={styles.itemChip} key={`${item.category}-${item.id}`}>
+                    <span className={styles.chipIcon} aria-hidden="true">{CATEGORY_ICONS[item.category] ?? '•'}</span>
                     {item.name}
                   </span>
                 ))
               ) : (
-                <p className="muted">No items located here.</p>
+                <p className={shared.muted}>No items located here.</p>
               )}
             </div>
           </EntityCard>

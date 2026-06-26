@@ -1,0 +1,49 @@
+/* Cross-component utilities, imported where needed via `import shared from
+   '../styles/shared.module.css'`. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 1rem;
+}
+
+/* ------------------------------------------------------------------ badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge--devices { background: color-mix(in srgb, var(--c-device) 14%, transparent); color: var(--c-device); }
+.badge--furniture { background: color-mix(in srgb, var(--c-furniture) 16%, transparent); color: var(--c-furniture); }
+.badge--instruments { background: color-mix(in srgb, var(--c-instrument) 14%, transparent); color: var(--c-instrument); }
+.badge--sport-equipments { background: color-mix(in srgb, var(--c-sport) 16%, transparent); color: var(--c-sport); }
+.badge--plants { background: color-mix(in srgb, var(--c-plant) 16%, transparent); color: var(--c-plant); }
+.badge--vehicles { background: color-mix(in srgb, var(--c-vehicle) 14%, transparent); color: var(--c-vehicle); }
+.badge--house { background: color-mix(in srgb, var(--c-house) 14%, transparent); color: var(--c-house); }
+.badge--apartment { background: color-mix(in srgb, var(--c-apartment) 14%, transparent); color: var(--c-apartment); }
+
+/* ------------------------------------------------------------------- misc */
+.muted {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.empty {
+  color: var(--muted);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}

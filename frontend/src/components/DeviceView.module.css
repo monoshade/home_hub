@@ -1,0 +1,18 @@
+.view {
+  min-width: 0;
+}
+
+.viewHint {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.cardLocation {
+  margin: 0.85rem 0 0;
+  font-size: 0.84rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}

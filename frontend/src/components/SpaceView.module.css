@@ -1,0 +1,141 @@
+.spaceView {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.sidebarTitle {
+  margin: 0 0 0.7rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.propList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  position: sticky;
+  top: 1.25rem;
+}
+
+.propItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+  padding: 0.8rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+.propItem:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.propItemActive {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-md);
+}
+
+.propItemTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.propName {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+}
+
+.propIcon {
+  font-size: 1.05rem;
+}
+
+.propAddr {
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding-left: 1.55rem;
+}
+
+.propDetail {
+  min-width: 0;
+}
+
+.propHeader {
+  margin-bottom: 1.4rem;
+  padding: 1.4rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.propHeader h2 {
+  margin: 0 0 0.8rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* ----------------------------------------------------- items within a space */
+.spaceItems {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.itemChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.itemChip:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.chipIcon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .spaceView {
+    grid-template-columns: 1fr;
+  }
+
+  .propList {
+    position: static;
+  }
+}
