@@ -20,4 +20,23 @@ final class Plants extends ItemBase
     ) {
         parent::__construct($id, $name, $spaceId, $createdAt);
     }
+
+    public function category(): string
+    {
+        return 'plants';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'species' => $this->species,
+            'watering_frequency_days' => $this->wateringFrequencyDays,
+            'last_watered' => $this->lastWatered,
+            'space_id' => $this->spaceId,
+            'category' => $this->category(),
+            'created_at' => $this->createdAt,
+        ];
+    }
 }

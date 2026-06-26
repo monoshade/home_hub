@@ -20,4 +20,23 @@ final class Yard extends Space
     ) {
         parent::__construct($id, $name, $area, $description, $createdAt);
     }
+
+    public function spaceType(): string
+    {
+        return 'yard';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'space_type' => $this->spaceType(),
+            'area' => $this->area,
+            'description' => $this->description,
+            'surface_type' => $this->surfaceType,
+            'fenced' => $this->fenced,
+            'created_at' => $this->createdAt,
+        ];
+    }
 }

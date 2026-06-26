@@ -4,32 +4,33 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use Closure;
 use InvalidArgumentException;
 use PDO;
 
 /**
- * Generic CRUD repository for a single table.
+ * Generic data-access helper for a single table. Pure persistence: it returns
+ * raw database rows and never shapes the response — formatting the output is
+ * the controller/entity's job (see each entity's toArray()).
  *
  * Writes are restricted to the configured $writable columns (a whitelist), and
- * all values are bound — request keys never reach SQL directly. Rows are passed
- * through the $serialize closure on the way out (typically Entity::fromRow()->toArray()).
+ * all values are bound — request keys never reach SQL directly.
  */
 final class Repository
 {
     /**
-     * @param string[]                  $writable  columns accepted for insert/update/filter
-     * @param Closure(array): array     $serialize row -> output array
+     * @param string[] $writable columns accepted for insert/update/filter
      */
     public function __construct(
         private PDO $pdo,
         private string $table,
         private array $writable,
-        private Closure $serialize,
     ) {
     }
 
-    /** @param array<string, mixed> $filters */
+    /**
+     * @param array<string, mixed> $filters
+     * @return array<int, array<string, mixed>> raw rows
+     */
     public function all(array $filters = []): array
     {
         $columns = array_values(array_intersect($this->writable, array_keys($filters)));
@@ -47,19 +48,23 @@ final class Repository
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table}{$where} ORDER BY id");
         $stmt->execute($this->normalize($params));
 
-        return array_map($this->serialize, $stmt->fetchAll());
+        return $stmt->fetchAll();
     }
 
+    /** @return array<string, mixed>|null raw row */
     public function find(int $id): ?array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
 
-        return $row ? ($this->serialize)($row) : null;
+        return $row ?: null;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed> raw row
+     */
     public function create(array $data): array
     {
         $columns = array_values(array_intersect($this->writable, array_keys($data)));
@@ -72,10 +77,13 @@ final class Repository
         $stmt = $this->pdo->prepare("INSERT INTO {$this->table} ($names) VALUES ($binds) RETURNING *");
         $stmt->execute($this->normalize($this->pick($columns, $data)));
 
-        return ($this->serialize)($stmt->fetch());
+        return $stmt->fetch();
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>|null raw row
+     */
     public function update(int $id, array $data): ?array
     {
         $columns = array_values(array_intersect($this->writable, array_keys($data)));
@@ -91,7 +99,7 @@ final class Repository
         $stmt->execute($this->normalize($params));
         $row = $stmt->fetch();
 
-        return $row ? ($this->serialize)($row) : null;
+        return $row ?: null;
     }
 
     public function delete(int $id): bool

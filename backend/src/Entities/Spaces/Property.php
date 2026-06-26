@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Entities\Spaces;
 
 /**
- * A real-estate property / parcel of land. Base class for House and Apartment.
+ * A real-estate property / parcel of land. Abstract base class for House and
+ * Apartment, which supply the concrete space_type and formatted output.
  */
-class Property extends Space
+abstract class Property extends Space
 {
     public function __construct(
         ?int $id,

@@ -20,4 +20,23 @@ final class Instruments extends ItemBase
     ) {
         parent::__construct($id, $name, $spaceId, $createdAt);
     }
+
+    public function category(): string
+    {
+        return 'instruments';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'type' => $this->type,
+            'brand' => $this->brand,
+            'purchase_date' => $this->purchaseDate,
+            'space_id' => $this->spaceId,
+            'category' => $this->category(),
+            'created_at' => $this->createdAt,
+        ];
+    }
 }

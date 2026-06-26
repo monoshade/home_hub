@@ -21,4 +21,24 @@ final class Device extends ItemBase
     ) {
         parent::__construct($id, $name, $spaceId, $createdAt);
     }
+
+    public function category(): string
+    {
+        return 'devices';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'brand' => $this->brand,
+            'model' => $this->model,
+            'status' => $this->status,
+            'purchase_date' => $this->purchaseDate,
+            'space_id' => $this->spaceId,
+            'category' => $this->category(),
+            'created_at' => $this->createdAt,
+        ];
+    }
 }

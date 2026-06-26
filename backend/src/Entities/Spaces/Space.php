@@ -9,7 +9,12 @@ use App\Entities\EntityRowMapper;
 /**
  * Common base for space-type entities (Room, House, Apartment, ...).
  * Holds the shared columns (id, name, area, description, created_at);
- * row hydration and serialization come from EntityRowMapper.
+ * row hydration comes from EntityRowMapper.
+ *
+ * Each concrete space defines an explicit toArray() describing its formatted
+ * API output, including the intrinsic `space_type` discriminator. The
+ * relational `parent_space_id` (and any nested spaces/items) is added by the
+ * controller / aggregate, not by the entity.
  */
 abstract class Space
 {
@@ -23,4 +28,10 @@ abstract class Space
         public readonly ?string $createdAt = null,
     ) {
     }
+
+    /** The space type discriminator (e.g. "house", "room"). */
+    abstract public function spaceType(): string;
+
+    /** Formatted API representation (snake_case keys). */
+    abstract public function toArray(): array;
 }

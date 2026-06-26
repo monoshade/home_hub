@@ -20,4 +20,23 @@ final class Deck extends Space
     ) {
         parent::__construct($id, $name, $area, $description, $createdAt);
     }
+
+    public function spaceType(): string
+    {
+        return 'deck';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'space_type' => $this->spaceType(),
+            'area' => $this->area,
+            'description' => $this->description,
+            'material' => $this->material,
+            'covered' => $this->covered,
+            'created_at' => $this->createdAt,
+        ];
+    }
 }

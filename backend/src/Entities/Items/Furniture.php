@@ -20,4 +20,23 @@ final class Furniture extends ItemBase
     ) {
         parent::__construct($id, $name, $spaceId, $createdAt);
     }
+
+    public function category(): string
+    {
+        return 'furniture';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'material' => $this->material,
+            'dimensions' => $this->dimensions,
+            'purchase_date' => $this->purchaseDate,
+            'space_id' => $this->spaceId,
+            'category' => $this->category(),
+            'created_at' => $this->createdAt,
+        ];
+    }
 }

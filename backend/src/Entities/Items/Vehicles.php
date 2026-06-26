@@ -22,4 +22,25 @@ final class Vehicles extends ItemBase
     ) {
         parent::__construct($id, $name, $spaceId, $createdAt);
     }
+
+    public function category(): string
+    {
+        return 'vehicles';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'type' => $this->type,
+            'make' => $this->make,
+            'model' => $this->model,
+            'year' => $this->year,
+            'license_plate' => $this->licensePlate,
+            'space_id' => $this->spaceId,
+            'category' => $this->category(),
+            'created_at' => $this->createdAt,
+        ];
+    }
 }

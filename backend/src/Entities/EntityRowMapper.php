@@ -8,10 +8,16 @@ use ReflectionClass;
 use ReflectionNamedType;
 
 /**
- * Generic row hydration / serialization shared by entity base classes.
+ * Row hydration shared by entity base classes: builds a typed entity from a
+ * database row.
  *
  * Mapping convention: a camelCase constructor parameter maps to the
  * snake_case database column of the same name (e.g. floorLevel <-> floor_level).
+ *
+ * Note: this only handles the input side (row -> entity). Each concrete entity
+ * defines its own explicit toArray() for the formatted API output, so the
+ * response shape is an intentional contract rather than a reflection of the
+ * object's internals.
  */
 trait EntityRowMapper
 {
@@ -53,33 +59,6 @@ trait EntityRowMapper
         }
 
         return $ref->newInstanceArgs($args);
-    }
-
-    /**
-     * Plain array for JSON responses, with snake_case keys. Nested entities
-     * and collections of entities are serialized recursively.
-     */
-    public function toArray(): array
-    {
-        $out = [];
-        foreach (get_object_vars($this) as $property => $value) {
-            $out[self::toSnakeCase($property)] = self::serializeValue($value);
-        }
-
-        return $out;
-    }
-
-    private static function serializeValue(mixed $value): mixed
-    {
-        if (is_array($value)) {
-            return array_map(static fn ($item) => self::serializeValue($item), $value);
-        }
-
-        if (is_object($value) && method_exists($value, 'toArray')) {
-            return $value->toArray();
-        }
-
-        return $value;
     }
 
     private static function toSnakeCase(string $name): string

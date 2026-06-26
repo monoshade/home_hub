@@ -21,10 +21,11 @@ home_hub/
 │   ├── public/index.php    # front controller (CORS, dispatch)
 │   └── src/
 │       ├── Database.php     # PDO connection factory
-│       ├── routes.php       # route + repository wiring
+│       ├── routes.php       # composition root: wires per-entity controllers + views
 │       ├── Http/            # Router, Request, Response, HttpException
-│       ├── Repository/      # generic CRUD repository
-│       └── Entities/        # Items/ and Spaces/ domain models
+│       │   └── Controllers/ # ResourceController base + one controller per entity
+│       ├── Repository/      # data-access helper (raw rows; no formatting)
+│       └── Entities/        # Items/ and Spaces/ — each defines its formatted toArray()
 └── frontend/               # React app
     └── src/
         ├── App.jsx          # root tabs: Space View / Full Device View
@@ -55,10 +56,16 @@ Then:
 | GET | `/api/properties` | houses/apartments with nested spaces + located items |
 | GET | `/api/spaces?type=&parent=` | spaces, optionally filtered |
 | GET/POST/PUT/DELETE | `/api/spaces[/{id}]` | space CRUD (`space_type` in body) |
-| GET/POST/PUT/DELETE | `/api/{category}[/{id}]` | item CRUD per category |
+| GET/POST/PUT/DELETE | `/api/devices[/{id}]` | device CRUD |
+| GET/POST/PUT/DELETE | `/api/furniture[/{id}]` | furniture CRUD |
+| GET/POST/PUT/DELETE | `/api/instruments[/{id}]` | instrument CRUD |
+| GET/POST/PUT/DELETE | `/api/sport-equipments[/{id}]` | sport equipment CRUD |
+| GET/POST/PUT/DELETE | `/api/plants[/{id}]` | plant CRUD |
+| GET/POST/PUT/DELETE | `/api/vehicles[/{id}]` | vehicle CRUD |
 
-Item categories: `devices`, `furniture`, `instruments`, `sport-equipments`,
-`plants`, `vehicles`.
+Each item resource has its own controller (`Http/Controllers/Items/`); the
+`category` field in responses is intrinsic to each entity. Spaces share one
+controller (`Http/Controllers/Spaces/`) that picks the entity by `space_type`.
 
 ## Data model
 
