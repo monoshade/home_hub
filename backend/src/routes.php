@@ -10,6 +10,7 @@ use App\Http\Controllers\Items\SportEquipmentsController;
 use App\Http\Controllers\Items\VehiclesController;
 use App\Http\Controllers\Spaces\SpaceController;
 use App\Http\Router;
+use App\Context;
 
 /**
  * Build and configure the application router.
@@ -18,6 +19,7 @@ use App\Http\Router;
  * return value). Two read-only views compose those controllers:
  *
  *   GET /api/health
+ *   GET /api/context
  *   {GET,POST,PUT,DELETE} /api/devices[/{id}]            \
  *   {GET,POST,PUT,DELETE} /api/furniture[/{id}]           |
  *   {GET,POST,PUT,DELETE} /api/instruments[/{id}]         | per-item resources
@@ -28,11 +30,14 @@ use App\Http\Router;
  *   GET /api/items                  aggregate of all belongings
  *   GET /api/properties             houses/apartments, nested spaces + items
  */
-function create_router(PDO $pdo): Router
+function create_router(PDO $pdo, Context $context): Router
 {
     $router = new Router();
 
-    $router->get('/api/health', static fn () => ['status' => 'ok']);
+    $router->get('/api/health', static fn () => ['status' => 'ok'] + $context->toArray());
+
+    // Runtime context (db + environment) the backend booted with.
+    $router->get('/api/context', static fn () => $context->toArray());
 
     // ---- Per-item resources -----------------------------------------------
     $itemControllers = [

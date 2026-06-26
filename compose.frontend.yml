@@ -1,0 +1,25 @@
+# Frontend (React/Vite) service — standalone, independently initiable.
+#
+#   docker compose -f compose.frontend.yml up
+#
+# The browser reaches the backend over a published host port (VITE_API_URL), so
+# the frontend has no dependency on the backend container — start it on its own,
+# point it at any backend, and run several instances side by side:
+#
+#   FRONTEND_PORT=5174 VITE_API_URL=http://localhost:8081 \
+#     docker compose -p home_hub_prod -f compose.frontend.yml up
+services:
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    environment:
+      # Where the browser reaches the backend.
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:${BACKEND_PORT:-8080}}
+      # Runtime context for THIS instance (db + environment).
+      VITE_APP_DB: ${APP_DB:-demo}
+      VITE_APP_ENV: ${APP_ENV:-demo}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules

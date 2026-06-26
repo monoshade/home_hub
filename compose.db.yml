@@ -1,0 +1,22 @@
+# Database service — standalone.
+#   docker compose -f compose.db.yml up
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-home_hub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-home_hub}
+      POSTGRES_DB: ${POSTGRES_DB:-demo}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # Data persisted to a local file directory (bind mount).
+      - ./db/data:/var/lib/postgresql/data
+      # SQL/sh files here run once, on first init of an empty data dir.
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-home_hub} -d ${POSTGRES_DB:-demo}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
