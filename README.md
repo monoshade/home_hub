@@ -18,9 +18,9 @@ home_hub/
 ├── .env.example            # copy to .env
 ├── db/
 │   ├── init/               # run once on first DB init
-│   │   ├── 01_schema.sql           # table schema (demo + prod)
-│   │   ├── 02_seed.sql             # demo fixture data (demo only)
-│   │   └── 03_create_prod_db.sh    # creates the prod database (schema only)
+│   │   ├── 01_schema.sql           # table schema (demo + prod + test)
+│   │   ├── 03_create_extra_dbs.sh  # creates prod + test, seeds all three dbs
+│   │   └── seeds/                  # demo / prod / test fixtures (loaded by the script)
 │   └── data/               # Postgres data files (gitignored)
 ├── backend/                # PHP API
 │   ├── public/index.php    # front controller (CORS, dispatch)
@@ -94,16 +94,18 @@ The backend resolves these into `App\Context` (`backend/src/Context.php`, with t
 behaviour such as CORS. The frontend mirrors them as `VITE_APP_DB` / `VITE_APP_ENV`
 (`frontend/src/context.js`), read at its entry point (`frontend/src/main.jsx`).
 
-Two databases are created on first init:
+Three databases are created on first init:
 
 - **`demo`** (`POSTGRES_DB`) — table schema **+** demo fixture data. The default
   `demo` db context is wired to it (`DB_NAME_DEMO`).
-- **`prod`** (`POSTGRES_PROD_DB`) — table schema only, no fixtures. The `prod` db
-  context is wired to it (`DB_NAME_PROD`).
+- **`prod`** (`POSTGRES_PROD_DB`) — table schema **+** its own fixtures
+  (`db/init/seeds/prod.sql`). The `prod` db context is wired to it (`DB_NAME_PROD`).
+- **`test`** (`POSTGRES_TEST_DB`) — table schema **+** a minimal, predictable
+  fixture set (`db/init/seeds/test.sql`). The `test` db context is wired to it
+  (`DB_NAME_TEST`).
 
 Each `APP_DB` case maps to a database name via `DB_NAME_{PROD,DEMO,TEST}`, falling
-back to the shared `DB_NAME`. Set `DB_NAME_TEST` to point the `test` context at its
-own database.
+back to the shared `DB_NAME`.
 
 ```bash
 # default (demo db + demo environment)
@@ -111,6 +113,11 @@ docker compose up --build
 
 # prod profile: prod environment against the prod database
 APP_DB=prod APP_ENV=prod docker compose up --build
+
+# test profile: backend against the empty test database (own project + port,
+# so it runs alongside the default stack)
+APP_DB=test BACKEND_PORT=8082 \
+  docker compose -p home_hub_test -f compose.backend.yml up --build
 ```
 
 Then:
