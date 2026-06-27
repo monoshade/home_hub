@@ -42,6 +42,17 @@ abstract class ResourceController
     abstract protected function writable(): array;
 
     /**
+     * Query-string parameters accepted on the list endpoint. None by default;
+     * resources with list filters (e.g. spaces) override this.
+     *
+     * @return string[]
+     */
+    protected function allowedQueryParams(): array
+    {
+        return [];
+    }
+
+    /**
      * Map a raw database row to this resource's formatted response shape.
      * This is the single place each resource defines its return value.
      *
@@ -71,6 +82,8 @@ abstract class ResourceController
 
     protected function index(Request $req): array
     {
+        $this->validateQueryParams($req);
+
         return $this->all();
     }
 
@@ -86,12 +99,18 @@ abstract class ResourceController
 
     protected function store(Request $req): Response
     {
-        return Response::json($this->format($this->repo->create($req->body())), 201);
+        $data = $req->body();
+        $this->validateFields($data);
+
+        return Response::json($this->format($this->repo->create($data)), 201);
     }
 
     protected function update(Request $req): array
     {
-        $row = $this->repo->update((int) $req->vars['id'], $req->body());
+        $data = $req->body();
+        $this->validateFields($data);
+
+        $row = $this->repo->update((int) $req->vars['id'], $data);
         if ($row === null) {
             throw HttpException::notFound();
         }
@@ -106,5 +125,31 @@ abstract class ResourceController
         }
 
         return new Response(null, 204);
+    }
+
+    /**
+     * Reject any query-string parameter not declared in allowedQueryParams()
+     * with a 400, so undefined parameters fail loudly instead of being ignored.
+     */
+    protected function validateQueryParams(Request $req): void
+    {
+        $unknown = array_diff(array_keys($req->queryParams()), $this->allowedQueryParams());
+        if ($unknown !== []) {
+            throw HttpException::badRequest('Unknown query parameter(s): ' . implode(', ', $unknown));
+        }
+    }
+
+    /**
+     * Reject any body field not accepted for writing (see writable()) with a
+     * 400, rather than silently dropping it on create/update.
+     *
+     * @param array<string, mixed> $data
+     */
+    protected function validateFields(array $data): void
+    {
+        $unknown = array_diff(array_keys($data), $this->writable());
+        if ($unknown !== []) {
+            throw HttpException::badRequest('Unknown field(s): ' . implode(', ', $unknown));
+        }
     }
 }

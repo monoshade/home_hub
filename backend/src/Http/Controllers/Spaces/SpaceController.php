@@ -68,9 +68,17 @@ final class SpaceController extends ResourceController
         ];
     }
 
+    /** The list endpoint accepts ?type= (space_type) and ?parent= (parent_space_id). */
+    protected function allowedQueryParams(): array
+    {
+        return ['type', 'parent'];
+    }
+
     /** List with optional ?type= (space_type) and ?parent= (parent_space_id) filters. */
     protected function index(Request $req): array
     {
+        $this->validateQueryParams($req);
+
         $filters = [];
         if ($req->query('type') !== null) {
             $filters['space_type'] = $req->query('type');
