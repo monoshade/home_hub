@@ -1,6 +1,6 @@
 -- Demo seed data. Auto-applied to the default database only (POSTGRES_DB = demo).
--- The `prod` database (created by 03_create_prod_db.sh) gets the schema but not
--- this fixture data.
+-- The `prod` and `test` databases (created by 03_create_extra_dbs.sh) get the
+-- schema but not this fixture data.
 
 INSERT INTO items (name) VALUES ('hello from postgres');
 

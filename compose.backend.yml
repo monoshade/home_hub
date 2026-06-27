@@ -8,6 +8,9 @@
 #
 #   APP_DB=prod APP_ENV=prod BACKEND_PORT=8081 \
 #     docker compose -p home_hub_prod -f compose.backend.yml up
+#
+#   APP_DB=test BACKEND_PORT=8082 \
+#     docker compose -p home_hub_test -f compose.backend.yml up
 services:
   backend:
     build: ./backend
@@ -23,6 +26,7 @@ services:
       # Each db context connects to its own database.
       DB_NAME_DEMO: ${POSTGRES_DB:-demo}
       DB_NAME_PROD: ${POSTGRES_PROD_DB:-prod}
+      DB_NAME_TEST: ${POSTGRES_TEST_DB:-test}
       DB_USER: ${POSTGRES_USER:-home_hub}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-home_hub}
     ports:
