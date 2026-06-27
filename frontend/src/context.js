@@ -1,10 +1,10 @@
 // Runtime context for the frontend, supplied at startup via Vite env vars
 // (set in docker-compose.yml / .env), mirroring the backend's App\Context:
 //   VITE_APP_DB  -> 'prod' | 'demo' | 'test'   (default: 'demo')
-//   VITE_APP_ENV -> 'prod' | 'demo'            (default: 'demo')
+//   VITE_APP_ENV -> 'prod' | 'demo' | 'test'   (default: 'demo')
 // Unknown values fall back to the safe demo defaults.
 const DB_VALUES = ['prod', 'demo', 'test']
-const ENV_VALUES = ['prod', 'demo']
+const ENV_VALUES = ['prod', 'demo', 'test']
 
 const pick = (value, allowed, fallback) =>
   allowed.includes(value) ? value : fallback

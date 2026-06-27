@@ -86,7 +86,7 @@ Each component boots with its own context, passed in at startup via env vars
 | Var | Values | Meaning |
 |-----|--------|---------|
 | `APP_DB` | `prod` \| `demo` \| `test` | which database to connect to |
-| `APP_ENV` | `prod` \| `demo` | which environment to run as |
+| `APP_ENV` | `prod` \| `demo` \| `test` | which environment to run as |
 
 The backend resolves these into `App\Context` (`backend/src/Context.php`, with the
 `App\Db` and `App\Environment` enums) at its entry point (`backend/public/index.php`):

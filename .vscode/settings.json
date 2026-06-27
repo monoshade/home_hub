@@ -1,0 +1,12 @@
+{
+  // VS Code's default package.json schema URL (https://www.schemastore.org/package)
+  // returns no content in this environment ("Unable to load schema ... No content").
+  // Keep schema validation working by mapping package.json to a vendored local copy
+  // of the SchemaStore schema instead of fetching it over the network.
+  "json.schemas": [
+    {
+      "fileMatch": ["package.json"],
+      "url": "./.vscode/schemas/package.schema.json"
+    }
+  ]
+}
