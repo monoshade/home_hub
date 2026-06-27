@@ -19,8 +19,8 @@ home_hub/
 ├── db/
 │   ├── init/               # run once on first DB init
 │   │   ├── 01_schema.sql           # table schema (demo + prod + test)
-│   │   ├── 02_seed.sql             # demo fixture data (demo only)
-│   │   └── 03_create_extra_dbs.sh  # creates the prod + test databases (schema only)
+│   │   ├── 03_create_extra_dbs.sh  # creates prod + test, seeds all three dbs
+│   │   └── seeds/                  # demo / prod / test fixtures (loaded by the script)
 │   └── data/               # Postgres data files (gitignored)
 ├── backend/                # PHP API
 │   ├── public/index.php    # front controller (CORS, dispatch)
@@ -98,10 +98,11 @@ Three databases are created on first init:
 
 - **`demo`** (`POSTGRES_DB`) — table schema **+** demo fixture data. The default
   `demo` db context is wired to it (`DB_NAME_DEMO`).
-- **`prod`** (`POSTGRES_PROD_DB`) — table schema only, no fixtures. The `prod` db
-  context is wired to it (`DB_NAME_PROD`).
-- **`test`** (`POSTGRES_TEST_DB`) — table schema only, empty. The `test` db
-  context is wired to it (`DB_NAME_TEST`).
+- **`prod`** (`POSTGRES_PROD_DB`) — table schema **+** its own fixtures
+  (`db/init/seeds/prod.sql`). The `prod` db context is wired to it (`DB_NAME_PROD`).
+- **`test`** (`POSTGRES_TEST_DB`) — table schema **+** a minimal, predictable
+  fixture set (`db/init/seeds/test.sql`). The `test` db context is wired to it
+  (`DB_NAME_TEST`).
 
 Each `APP_DB` case maps to a database name via `DB_NAME_{PROD,DEMO,TEST}`, falling
 back to the shared `DB_NAME`.

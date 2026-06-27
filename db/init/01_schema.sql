@@ -1,4 +1,4 @@
--- Table schema (structure only — seed data lives in 02_seed.sql).
+-- Table schema (structure only — seed data lives in seeds/).
 --
 -- Runs automatically the first time the database initializes (when ./db/data
 -- is empty). Auto-applied to the default database (POSTGRES_DB = demo); also
