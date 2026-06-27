@@ -47,11 +47,4 @@ final class SpaceControllerTest extends ApiTestCase
             $this->assertSame(200, $response->status, "GET /api/spaces?type={$type} should return 200");
         }
     }
-
-    // --- case 9: HELD (see review) -----------------------------------------
-    // "spaces + ?version= -> 400" is NEW behaviour (base returns 200, param
-    // ignored), so it is a fail_to_pass, not pass_to_pass, and cannot coexist
-    // with case 7 (byte-identical SpaceController) unless the 400 is enforced in
-    // shared code (Router/ResourceController). Pending your decision before I
-    // write it.
 }
