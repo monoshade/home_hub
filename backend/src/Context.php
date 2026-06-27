@@ -11,7 +11,7 @@ namespace App;
  *
  * The enum cases live in their own files so they autoload independently:
  *   - {@see Db}          prod | demo | test
- *   - {@see Environment} prod | demo
+ *   - {@see Environment} prod | demo | test
  */
 final class Context
 {
@@ -26,7 +26,7 @@ final class Context
      * variables; set in docker-compose.yml / .env):
      *
      *   APP_DB  -> prod | demo | test  (default: demo)
-     *   APP_ENV -> prod | demo         (default: demo)
+     *   APP_ENV -> prod | demo | test  (default: demo)
      *
      * Unknown values fall back to the safe demo defaults.
      */

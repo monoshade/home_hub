@@ -12,4 +12,5 @@ enum Environment: string
 {
     case Prod = 'prod';
     case Demo = 'demo';
+    case Test = 'test';
 }
