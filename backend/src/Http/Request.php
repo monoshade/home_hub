@@ -42,6 +42,17 @@ final class Request
         return isset($this->query[$key]) ? (string) $this->query[$key] : $default;
     }
 
+    /**
+     * All query-string parameters, keyed by name. Used to reject undefined
+     * parameters (see ResourceController::validateQueryParams()).
+     *
+     * @return array<string, mixed>
+     */
+    public function queryParams(): array
+    {
+        return $this->query;
+    }
+
     public function body(): array
     {
         return $this->body ?? [];
